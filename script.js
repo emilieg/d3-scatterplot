@@ -29,7 +29,7 @@ var yValue = function(d) { return d.ANNMEDSAL;}, // data -> value
     yAxis = d3.svg.axis().scale(yScale).orient("left");
 
 // setup fill color
-var cValue = function(d) { return d.OCCTITLE;},
+var cValue = function(d) { return d.STEMFLAG;},
     color = d3.scale.category10();
 
 // add the graph canvas to the body of the webpage
@@ -45,7 +45,7 @@ var tooltip = d3.select("body").append("div")
     .style("opacity", 0);
 
  // load data
-d3.csv("STEMplotterData.csv", function(error, data) {
+d3.csv("CombinedData.csv", function(error, data) {
   console.log("im getting the data", data);
     // change string (from CSV) into number format
   data.forEach(function(d) {
