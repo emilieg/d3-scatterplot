@@ -11,7 +11,6 @@ var margin = {top: 20, right: 20, bottom: 30, left: 80},
  */ 
 
 
-
 // X AXIS WILL REPRESENT VALUES FROM THE EDLEVELNUM - educational level (1 thru 9)
 // Y AXIS WILL REPRESENT VALUES FROM THE ANNMEDSAL - annual median salary 
 
@@ -44,16 +43,18 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
- // load data
-d3.csv("consolidatedData.csv", function(error, data) {
-  console.log("im getting the data", data);
-    // change string (from CSV) into number format
+function load(){
+    console.log("josonDATA: ", data);
+// } 
+//  // load data
+// d3.csv("consolidatedData.csv", function(error, data) {
+//   console.log("CSV-DATA", data);
+//     // change string (from CSV) into number format
   data.forEach(function(d) {
     d.EDLEVELNUM = +d.EDLEVELNUM;
     d.ANNMEDSAL = +d.ANNMEDSAL;
    // console.log("d: ", d);
   })
-
 
   // don't want dots overlapping axis, so add in buffer to data domain
   xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
@@ -107,4 +108,5 @@ d3.csv("consolidatedData.csv", function(error, data) {
                .style("opacity", 0);
       });    
 
-}); //closes csv data load    
+// }); //closes csv data load 
+}  
