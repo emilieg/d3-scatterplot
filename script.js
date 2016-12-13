@@ -1,7 +1,6 @@
-console.log("script is hooked up");
 var margin = {top: 20, right: 20, bottom: 30, left: 80},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    width = 980 - margin.left - margin.right,
+    height = 800 - margin.top - margin.bottom;
 
 /* 
  * value accessor - returns the value to encode for a given data object.
@@ -13,7 +12,6 @@ var margin = {top: 20, right: 20, bottom: 30, left: 80},
 
 // X AXIS WILL REPRESENT VALUES FROM THE EDLEVELNUM - educational level (1 thru 9)
 // Y AXIS WILL REPRESENT VALUES FROM THE ANNMEDSAL - annual median salary 
-
 
 // setup x 
 var xValue = function(d) { return d.EDLEVELNUM;}, // data -> value
@@ -43,13 +41,11 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+
 function load(){
     console.log("josonDATA: ", data);
-// } 
-//  // load data
-// d3.csv("consolidatedData.csv", function(error, data) {
-//   console.log("CSV-DATA", data);
-//     // change string (from CSV) into number format
+
+// change string (from CSV) into number format
   data.forEach(function(d) {
     d.EDLEVELNUM = +d.EDLEVELNUM;
     d.ANNMEDSAL = +d.ANNMEDSAL;
@@ -58,7 +54,8 @@ function load(){
 
   // don't want dots overlapping axis, so add in buffer to data domain
   xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);    
+  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]); 
+
 
   // x-axis
   svg.append("g")
@@ -82,7 +79,7 @@ function load(){
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Annual Medial Salary");
+      .text("$ Annual Medial Salary");
 
   // draw dots
   svg.selectAll(".dot")
@@ -98,7 +95,7 @@ function load(){
                .duration(200)
                .style("opacity", .9);
           tooltip.html(d.OCCTITLE + "<br/> (" + xValue(d) 
-          + ", " + yValue(d) + ")")
+          + ", " + "$" + yValue(d) + ")")
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
       })
@@ -106,7 +103,43 @@ function load(){
           tooltip.transition()
                .duration(500)
                .style("opacity", 0);
-      });    
+      }); 
 
-// }); //closes csv data load 
+  // draw legend
+  var legend = svg.selectAll(".legend")
+      .data(color.domain())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(20," + i * 20 + ")"; });
+
+  // draw legend colored rectangles
+  legend.append("rect")
+      .attr("x", width - 18)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  // draw legend text
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d;})       
+
 }  
+
+$(document).ready(function(){
+  var text = $('text');
+  text[1].innerHTML = "No formal credentials";
+  text[2].innerHTML = "High School";
+  text[3].innerHTML = "Apprenticeship";
+  text[4].innerHTML = "Some College";
+  text[5].innerHTML = "Associates";
+  text[6].innerHTML = "Bachelors";
+  text[7].innerHTML = "Post Secondary";
+  text[8].innerHTML = "Masters";
+  text[9].innerHTML = "Doctoral";
+
+
+});
